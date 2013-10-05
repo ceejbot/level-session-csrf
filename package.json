@@ -1,0 +1,28 @@
+{
+	"name":        "level-session-csrf",
+	"version":     "0.0.1",
+	"description": "connect middleware for stashing a csrf token in a level-session store",
+	"author":      "C J Silverio <ceejceej@gmail.com>",
+	"license":     "MIT",
+	"main":        "index.js",
+	"scripts":
+	{
+		"test": "mocha -R spec test.js"
+	},
+	"repository":
+	{
+		"type": "git",
+		"url": "git://github.com/ceejbot/level-session-csrf.git"
+	},
+	"keywords": [ "connect", "express", "middleware", "csrf" ],
+	"bugs": { "url": "https://github.com/ceejbot/level-session-csrf/issues" },
+	"dependencies":
+	{
+		"puid": "~0.5.0"
+	},
+	"devDependencies":
+	{
+		"mocha": "*",
+		"chai": "*"
+	}
+}
