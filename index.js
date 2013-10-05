@@ -13,34 +13,47 @@ module.exports = function csrf(options)
 
 	function middleware(request, response, next)
 	{
-		request.session.get('_csrfSecret', function(err, secret)
+		request.session.get('_csrfSecret', function(err, stored)
 		{
 			if (err) return next(err);
-			if (!secret)
-				secret = puid.generate();
-
-			// Decorate the request with a lazy-evaluation token-getter function.
-			var token;
-			request.csrfToken = function csrfToken()
+			if (!stored)
 			{
-				return token || (token = saltedToken(secret));
-			};
-
-			// Enforce a match, but only for http verbs that modify resources.
-			if ('GET' == req.method || 'HEAD' == req.method || 'OPTIONS' == req.method)
-				return next();
-
-			var passedIn = value(request);
-
-			if (!checkToken(passedIn, secret))
+				stored = puid.generate();
+				request.session.set('_csrfSecret', stored, function(err)
+				{
+					if (err) return next(err);
+					validate(stored);
+				});
+			}
+			else
 			{
-				var error = new Error(http.STATUS_CODES[code]);
-				error.status = code;
-				error.csrf = 'CSRF token mismatch';
-				return next(error);
+				validate(stored);
 			}
 
-			next();
+			function validate(secret)
+			{
+				// Decorate the request with a lazy-evaluation token-getter function.
+				var token;
+				request.csrfToken = function csrfToken()
+				{
+					return token || (token = saltedToken(secret));
+				};
+
+				// Enforce a match, but only for http verbs that modify resources.
+				if ('GET' == request.method || 'HEAD' == request.method || 'OPTIONS' == request.method)
+					return next();
+
+				var passedIn = value(request);
+				if (!checkToken(passedIn, secret))
+				{
+					var error = new Error(http.STATUS_CODES[403]);
+					error.status = 403;
+					error.csrf = 'CSRF token mismatch';
+					return next(error);
+				}
+
+				next();
+			}
 		});
 	}
 
@@ -68,7 +81,9 @@ function createToken(salt, secret)
 function checkToken(token, secret)
 {
 	if ('string' != typeof token) return false;
-	return (token === createToken(token.slice(0, 10), secret));
+
+	var tmp = createToken(token.slice(0, 10), secret);
+	return (token === tmp);
 }
 
 var SALTCHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
