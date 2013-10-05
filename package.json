@@ -5,6 +5,8 @@
 	"author":      "C J Silverio <ceejceej@gmail.com>",
 	"license":     "MIT",
 	"main":        "index.js",
+	"keywords":    [ "connect", "express", "middleware", "csrf" ],
+	"bugs":        { "url": "https://github.com/ceejbot/level-session-csrf/issues" },
 	"scripts":
 	{
 		"test": "mocha -R spec test.js"
@@ -14,8 +16,6 @@
 		"type": "git",
 		"url": "git://github.com/ceejbot/level-session-csrf.git"
 	},
-	"keywords": [ "connect", "express", "middleware", "csrf" ],
-	"bugs": { "url": "https://github.com/ceejbot/level-session-csrf/issues" },
 	"dependencies":
 	{
 		"puid": "~0.5.0"
