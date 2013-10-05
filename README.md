@@ -2,6 +2,8 @@
 
 Connect middleware that implements csrf tokens backed by a level-session store. API-compatible with [connect/csrf](http://www.senchalabs.org/connect/csrf.html).
 
+[![NPM](https://nodei.co/npm/level-session-csrf.png)](https://nodei.co/npm/level-session-csrf/)
+
 ## Usage
 
 ```javascript
