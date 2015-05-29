@@ -1,7 +1,7 @@
 {
   "name": "level-session-csrf",
   "description": "connect middleware for stashing a csrf token in a level-session store",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "C J Silverio <ceejceej@gmail.com>",
   "bugs": {
     "url": "https://github.com/ceejbot/level-session-csrf/issues"
