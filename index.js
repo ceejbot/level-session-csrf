@@ -1,4 +1,5 @@
 var
+	assert = require('assert'),
 	crypto = require('crypto'),
 	http   = require('http'),
 	Puid   = require('puid')
@@ -6,10 +7,10 @@ var
 
 var puid = new Puid();
 
-module.exports = function csrf(options)
+var csrf = module.exports = function csrf(options)
 {
 	options = options || {};
-	var value = options.value || findValue;
+	var value = options.value || csrf.findValue;
 
 	function middleware(request, response, next)
 	{
@@ -36,7 +37,7 @@ module.exports = function csrf(options)
 				var token;
 				request.csrfToken = function csrfToken()
 				{
-					return token || (token = saltedToken(secret));
+					return token || (token = csrf.saltedToken(secret));
 				};
 
 				// Enforce a match, but only for http verbs that modify resources.
@@ -44,7 +45,7 @@ module.exports = function csrf(options)
 					return next();
 
 				var passedIn = value(request);
-				if (!checkToken(passedIn, secret))
+				if (!csrf.checkToken(passedIn, secret))
 				{
 					var error = new Error(http.STATUS_CODES[403]);
 					error.status = 403;
@@ -60,40 +61,41 @@ module.exports = function csrf(options)
 	return middleware;
 };
 
-function findValue(request)
+csrf.findValue = function findValue(request)
 {
 	return (request.body && request.body._csrf) ||
 		(request.query && request.query._csrf) ||
 		(request.headers['x-csrf-token']) ||
 		(request.headers['x-xsrf-token']);
-}
+};
 
-function saltedToken(secret)
+csrf.saltedToken = function saltedToken(secret)
 {
-	return createToken(generateSalt(10), secret);
-}
+	return csrf.createToken(csrf.generateSalt(10), secret);
+};
 
-function createToken(salt, secret)
+csrf.createToken = function createToken(salt, secret)
 {
+	assert(salt && (typeof salt === 'string'), 'salt must be a string');
+	assert(secret && (typeof secret === 'string'), 'secret must be a string');
 	return salt + crypto.createHash('sha256').update(salt + secret).digest('base64');
-}
+};
 
-function checkToken(token, secret)
+csrf.checkToken = function checkToken(token, secret)
 {
 	if ('string' != typeof token) return false;
 
-	var tmp = createToken(token.slice(0, 10), secret);
+	var tmp = csrf.createToken(token.slice(0, 10), secret);
 	return (token === tmp);
-}
+};
 
 var SALTCHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-function generateSalt(length)
+csrf.generateSalt = function generateSalt(length)
 {
 	var r = [];
 	for (var i = 0; i < length; ++i)
 		r.push(SALTCHARS[Math.floor(Math.random() * SALTCHARS.length)]);
 
 	return r.join('');
-}
-
+};

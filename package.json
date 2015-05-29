@@ -1,28 +1,52 @@
 {
-	"name":        "level-session-csrf",
-	"version":     "0.0.1",
-	"description": "connect middleware for stashing a csrf token in a level-session store",
-	"author":      "C J Silverio <ceejceej@gmail.com>",
-	"license":     "MIT",
-	"main":        "index.js",
-	"keywords":    [ "connect", "express", "middleware", "csrf" ],
-	"bugs":        { "url": "https://github.com/ceejbot/level-session-csrf/issues" },
-	"scripts":
-	{
-		"test": "mocha -R spec test.js"
-	},
-	"repository":
-	{
-		"type": "git",
-		"url": "git://github.com/ceejbot/level-session-csrf.git"
-	},
-	"dependencies":
-	{
-		"puid": "~0.5.0"
-	},
-	"devDependencies":
-	{
-		"mocha": "^1.17.1",
-		"chai":  "^1.9.0"
-	}
+  "name": "level-session-csrf",
+  "description": "connect middleware for stashing a csrf token in a level-session store",
+  "version": "0.0.1",
+  "author": "C J Silverio <ceejceej@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/ceejbot/level-session-csrf/issues"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [
+        "index.js"
+      ],
+      "data-cover-never": [
+        "node_modules",
+        "test.js"
+      ],
+      "output-reporter": "spec"
+    },
+    "travis-cov": {
+      "threshold": 50
+    }
+  },
+  "dependencies": {
+    "puid": "~1.0.5"
+  },
+  "devDependencies": {
+    "blanket": "~1.1.7",
+    "mocha": "~2.2.5",
+    "mocoverage": "~1.0.0",
+    "must": "~0.12.0",
+    "sinon": "~1.14.1",
+    "travis-cov": "~0.2.5"
+  },
+  "keywords": [
+    "connect",
+    "csrf",
+    "express",
+    "middleware"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ceejbot/level-session-csrf.git"
+  },
+  "scripts": {
+    "test": "mocha --ui exports --require blanket -R mocoverage test.js",
+    "test-cov": "mocha -t 10000 --require blanket -R travis-cov test.js",
+    "test-travis": "npm run lint && npm test && npm run test-cov"
+  }
 }
