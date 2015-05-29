@@ -2,7 +2,7 @@
 
 Connect middleware that implements csrf tokens backed by a level-session store. API-compatible with [connect/csrf](http://www.senchalabs.org/connect/csrf.html).
 
-[![NPM](https://nodei.co/npm/level-session-csrf.png)](https://nodei.co/npm/level-session-csrf/)
+[![on npm](http://img.shields.io/npm/v/level-session-csrf.svg?style=flat)](https://www.npmjs.com/package/level-session-csrf)
 
 ## Usage
 
@@ -42,3 +42,7 @@ function customValue(request)
 var options = { 'value': customValue };
 app.use(csrf(options));
 ```
+
+## LICENSE
+
+MIT.
