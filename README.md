@@ -1,5 +1,7 @@
 # level-session-csrf
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ceejbot/level-session-csrf.svg)](https://greenkeeper.io/)
+
 Connect middleware that implements csrf tokens backed by a level-session store. API-compatible with [connect/csrf](http://www.senchalabs.org/connect/csrf.html).
 
 [![on npm](http://img.shields.io/npm/v/level-session-csrf.svg?style=flat)](https://www.npmjs.com/package/level-session-csrf)
